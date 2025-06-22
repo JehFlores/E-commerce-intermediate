@@ -35,11 +35,12 @@ const btnNext = document.querySelectorAll(".next");
 console.log(btnNext);
 const btnPrevious = document.querySelectorAll(".prev");
 // const images = document.querySelectorAll("#gallery img:not(#active-img)");
-const thbnImages = document.querySelectorAll(".thumbnail img");
+const thbnImages = document.querySelectorAll(".tnail-img");
+const ltboxThumbnail = document.querySelectorAll(".lightbox-thumbnail")
 let thbnIndex = 0;
-console.log(thbnImages);
+// console.log(thbnImages);
+// console.log(ltboxThumbnail);
 
-// Creo que mas bien en lightbox debería ser el hero, si lo hago acorde al código de ejemplo. El lightbox es lo que hace que se vea oscuro por debajo de las imágenes cuando se abren, pero creo que eso lo voy a hacer mejor en el body:
 const lightbox = document.getElementById("lightbox");
 const activeImage = document.getElementById("active-img");
 const lightboxActiveImg = document.getElementById("lightbox-active-img");
@@ -55,16 +56,42 @@ let images = [
 /*Abre el Lightbox*/
 
 const opensLightbox = () => {
-  console.log(thbnIndex);
-  // activeImage.src = images[thbnIndex];
-
-  // imageIndex = thbnIndex;
-  renderizarImagen();
+  activeImage.src = images[imageIndex];
+  
   lightbox.style.display = "flex";
   $body.classList.add("overlay");
-  // imageIndex = Array.from(images).indexOf(event.target);
 };
-// console.log("JALA");
+
+// -------- Esto renderiza la imagen según donde se dé click en los thumbnail y llama a la función que le quita la clase active a los thumbnail a los que se les había dado click antes 
+thbnImages.forEach((thumb, index) => {
+  thumb.addEventListener("click", () => {
+   
+  removeActive()
+
+  renderizarImagen(index);
+  });
+});
+
+ltboxThumbnail.forEach((thumb, index) => {
+  thumb.addEventListener("click", () => {
+    
+  removeActive()
+    
+  renderizarImagen(index);
+  });
+});
+// ---------
+
+function thumbActive (index) {
+  thbnImages[index].classList.add("active")
+  ltboxThumbnail[index].classList.add("active")
+}
+
+function removeActive () { 
+  thbnImages.forEach((image) => image.classList.remove("active"));
+
+  ltboxThumbnail.forEach((image) => image.classList.remove("active"));
+}
 
 /*Cierra el Lightbox */
 
@@ -81,9 +108,11 @@ function adelantaImagen() {
   } else {
     imageIndex++;
   }
-  renderizarImagen();
+  removeActive()
+  renderizarImagen(imageIndex);
   position();
 }
+
 
 /**
  * Funcion que cambia la foto en la anterior posicion
@@ -94,79 +123,55 @@ function retrocederImagen() {
   } else {
     imageIndex--;
   }
-  renderizarImagen();
+  removeActive()
+  renderizarImagen(imageIndex);
   position();
 }
 
-/**
- * Funcion que actualiza la imagen de imagen dependiendo de imageIndex
- */
-function renderizarImagen() {
-  activeImage.src = images[thbnIndex];
-  imageIndex = thbnIndex;
-
+//  Funcion que actualiza la imagen de imagen dependiendo de imageIndex
+// Esto me lo dió Copilot:
+function renderizarImagen(index) {
+  // console.log("Renderizando imagen:", images[imageIndex]);
+  
+  imageIndex = index;
+  
+  activeImage.src = images[imageIndex];
   activeImage.style.backgroundImage = `url(${images[imageIndex]})`;
+  
   lightboxActiveImg.style.backgroundImage = `url(${images[imageIndex]})`;
-  // thbnImages[imageIndex].classList.add("active");
+  thumbActive(imageIndex)
 }
 
-// Aquí en vez de poner la var images que guarda todas las imágenes grandes, debo hacer y poner otra var que guarde todos los thumbnails, porque a esos es a los que se les dar click para que se abra la imagen grande:
-thbnImages.forEach((img, index) => {
-  img.addEventListener("click", () => {
-    thbnIndex = index; // Guarda el índice globalmente
-    // Remover la clase 'active' de todas las imágenes
-    thbnImages.forEach((image) => image.classList.remove("active"));
-    // Agregar la clase 'active' solo a la imagen clickeada
-    img.classList.add("active");
 
-    renderizarImagen();
+// document.addEventListener("click", (e) => {
+//   if (e.target.matches("#menu-icon")) {
+//     $navMenu.classList.toggle("active");
+//     $body.classList.toggle("active");
+//   }
+// });
 
-    // opensLightbox(); // Llama a tu función usando ese índice
-  });
-});
-
-activeImage.addEventListener("click", opensLightbox);
+if(window.innerWidth >= 530) {
+  activeImage.addEventListener("click", opensLightbox);
+}
 
 function position() {
-  if (activeImage === images[0]) {
+  if (activeImage.src === images[0]) {
     activeImage.style.backgroundPosition = "0% 60%";
     console.log(images[0]);
   }
 }
 
 window.onload = function () {
-  renderizarImagen();
+  renderizarImagen(imageIndex);
   position();
 };
-// window.onresize = function () {
-//   renderizarImagen();
-// };
-// console.log(images[0]);
-// const adelantaImagen = () => {
-//   console.log(images[imageIndex]);
-//   console.log(imageIndex);
-//   imageIndex++;
-//   if (imageIndex >= images.length) {
-//     imageIndex = 0;
-//   }
-//   activeImage.src = images[imageIndex].src;
-// };
 
-// btnNext.addEventListener("click", adelantaImagen);
-btnNext.forEach((btn) => btn.addEventListener("click", adelantaImagen));
+// Botón que adelanta la Imagen
+btnNext.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            adelantaImagen();
+        });
+      })
 
-// /*Retrocede la Imagen*/
-
-// const retrocederImagen = () => {
-//   console.log(images[imageIndex]);
-//   console.log(imageIndex);
-
-//   imageIndex--;
-//   if (imageIndex < 0) {
-//     imageIndex = images.length - 1;
-//   }
-//   activeImage.src = images[imageIndex].src;
-// };
-
-// btnPrevious.addEventListener("click", retrocederImagen);
+// Botón que retrocede la Imagen
 btnPrevious.forEach((btn) => btn.addEventListener("click", retrocederImagen));

@@ -472,14 +472,21 @@ aplicará éstos estilos a .close-icon */
     align-self: center;
     cursor: pointer;
     border: 2px solid transparent;
+    /* border: 2px solid hsl(260, 100%, 55%); */
   }
 
   .thumbnail-img.active {
-    border: 2px solid hsl(26, 100%, 55%);
+    background-color: rgba(0, 0, 0, 0.5);
+
+    border: 2px solid hsl(260, 100%, 55%);
+    /* opacity: 0.4; */
+    /* filter: brightness(0.85); */
+    filter: contrast(0.4);
   }
 
   .thumbnail-img:hover {
-    opacity: 0.3;
+    /* opacity: 0.3; */
+    filter: contrast(0.4);
   }
 
   /* .texts { */
@@ -534,27 +541,27 @@ aplicará éstos estilos a .close-icon */
     z-index: 1;
   }
 
-  .lightbox-gallery-cont{
+  .lightbox-gallery-cont {
     position: relative;
   }
 
   .lightbox-active-img {
-   min-height: 70vh;
-  max-width: 45rem;
+    min-height: 70vh;
+    max-width: 45rem;
   }
 
   .lightbox-arrow {
     position: absolute;
-  top: 43%;
-  color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  border: 1px solid white;
-  background-color: var(--white);
-  padding: 12px;
-  box-sizing: content-box;
+    top: 43%;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid white;
+    background-color: var(--white);
+    padding: 12px;
+    box-sizing: content-box;
 
-  z-index: 2;
+    z-index: 2;
   }
 
   .close-lightbox {
@@ -567,7 +574,7 @@ aplicará éstos estilos a .close-icon */
 
   .prev {
     left: -18px;
-  top: 46%;
+    top: 46%;
   }
 
   .next {
@@ -656,7 +663,6 @@ aplicará éstos estilos a .close-icon */
   .img-active {
     /* max-width: 37.5rem; */
     max-width: 45rem;
-
   }
 
   .thumbnail {
