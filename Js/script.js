@@ -36,7 +36,7 @@ console.log(btnNext);
 const btnPrevious = document.querySelectorAll(".prev");
 // const images = document.querySelectorAll("#gallery img:not(#active-img)");
 const thbnImages = document.querySelectorAll(".tnail-img");
-const ltboxThumbnail = document.querySelectorAll(".lightbox-thumbnail")
+const ltboxThumbnail = document.querySelectorAll(".lightbox-thumbnail");
 let thbnIndex = 0;
 // console.log(thbnImages);
 // console.log(ltboxThumbnail);
@@ -57,37 +57,35 @@ let images = [
 
 const opensLightbox = () => {
   activeImage.src = images[imageIndex];
-  
+
   lightbox.style.display = "flex";
   $body.classList.add("overlay");
 };
 
-// -------- Esto renderiza la imagen según donde se dé click en los thumbnail y llama a la función que le quita la clase active a los thumbnail a los que se les había dado click antes 
+// -------- Esto renderiza la imagen según donde se dé click en los thumbnail y llama a la función que le quita la clase active a los thumbnail a los que se les había dado click antes
 thbnImages.forEach((thumb, index) => {
   thumb.addEventListener("click", () => {
-   
-  removeActive()
+    removeActive();
 
-  renderizarImagen(index);
+    renderizarImagen(index);
   });
 });
 
 ltboxThumbnail.forEach((thumb, index) => {
   thumb.addEventListener("click", () => {
-    
-  removeActive()
-    
-  renderizarImagen(index);
+    removeActive();
+
+    renderizarImagen(index);
   });
 });
 // ---------
 
-function thumbActive (index) {
-  thbnImages[index].classList.add("active")
-  ltboxThumbnail[index].classList.add("active")
+function thumbActive(index) {
+  thbnImages[index].classList.add("active");
+  ltboxThumbnail[index].classList.add("active");
 }
 
-function removeActive () { 
+function removeActive() {
   thbnImages.forEach((image) => image.classList.remove("active"));
 
   ltboxThumbnail.forEach((image) => image.classList.remove("active"));
@@ -108,11 +106,10 @@ function adelantaImagen() {
   } else {
     imageIndex++;
   }
-  removeActive()
+  removeActive();
   renderizarImagen(imageIndex);
   position();
 }
-
 
 /**
  * Funcion que cambia la foto en la anterior posicion
@@ -123,7 +120,7 @@ function retrocederImagen() {
   } else {
     imageIndex--;
   }
-  removeActive()
+  removeActive();
   renderizarImagen(imageIndex);
   position();
 }
@@ -132,16 +129,15 @@ function retrocederImagen() {
 // Esto me lo dió Copilot:
 function renderizarImagen(index) {
   // console.log("Renderizando imagen:", images[imageIndex]);
-  
+
   imageIndex = index;
-  
+
   activeImage.src = images[imageIndex];
   activeImage.style.backgroundImage = `url(${images[imageIndex]})`;
-  
-  lightboxActiveImg.style.backgroundImage = `url(${images[imageIndex]})`;
-  thumbActive(imageIndex)
-}
 
+  lightboxActiveImg.style.backgroundImage = `url(${images[imageIndex]})`;
+  thumbActive(imageIndex);
+}
 
 // document.addEventListener("click", (e) => {
 //   if (e.target.matches("#menu-icon")) {
@@ -150,14 +146,18 @@ function renderizarImagen(index) {
 //   }
 // });
 
-if(window.innerWidth >= 530) {
+if (window.innerWidth >= 530) {
   activeImage.addEventListener("click", opensLightbox);
 }
 
 function position() {
+  if (window.innerWidth > 530) return;
+
   if (activeImage.src === images[0]) {
     activeImage.style.backgroundPosition = "0% 60%";
     console.log(images[0]);
+  } else {
+    activeImage.style.backgroundPosition = "0% 0%";
   }
 }
 
@@ -168,10 +168,10 @@ window.onload = function () {
 
 // Botón que adelanta la Imagen
 btnNext.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            adelantaImagen();
-        });
-      })
+  btn.addEventListener("click", () => {
+    adelantaImagen();
+  });
+});
 
 // Botón que retrocede la Imagen
 btnPrevious.forEach((btn) => btn.addEventListener("click", retrocederImagen));

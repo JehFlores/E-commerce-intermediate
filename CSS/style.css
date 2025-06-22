@@ -189,7 +189,7 @@ aplicará éstos estilos a .close-icon */
 }
 
 .img-active {
-  height: 300px;
+  min-height: 300px;
   /* width: 100%;
   object-fit: cover; */
   background-size: cover;
@@ -451,7 +451,7 @@ aplicará éstos estilos a .close-icon */
 
   .img-active,
   .thumbnail-img {
-    border-radius: 12px;
+    border-radius: 10px;
   }
 
   .arrow {
@@ -465,6 +465,8 @@ aplicará éstos estilos a .close-icon */
     /* width: 80%; */
     margin: 3rem 0;
     max-width: 30.5rem;
+
+    /* position: relative; */
   }
 
   .thumbnail-img {
@@ -472,22 +474,54 @@ aplicará éstos estilos a .close-icon */
     align-self: center;
     cursor: pointer;
     border: 2px solid transparent;
-    /* border: 2px solid hsl(260, 100%, 55%); */
+
+    position: relative;
+  }
+
+  .thumbnail-img img {
+    display: block;
+    border-radius: inherit;
   }
 
   .thumbnail-img.active {
-    background-color: rgba(0, 0, 0, 0.5);
-
-    border: 2px solid hsl(260, 100%, 55%);
-    /* opacity: 0.4; */
-    /* filter: brightness(0.85); */
-    filter: contrast(0.4);
+    border-color: red;
+    background-color: rgba(255, 255, 255, 0.599);
+    position: relative;
   }
 
-  .thumbnail-img:hover {
-    /* opacity: 0.3; */
-    filter: contrast(0.4);
+  .thumbnail-overlay {
+    background-color: rgba(255, 255, 255, 0.8);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    border-radius: inherit;
+    opacity: 0;
   }
+
+  .thumbnail-img.active .thumbnail-overlay {
+    opacity: 1;
+  }
+
+  .thumbnail-img:not(.active):hover .thumbnail-overlay {
+    background-color: rgba(255, 255, 255, 0.5);
+
+    opacity: 1;
+  }
+
+  /* .thumbnail-img:hover::after { */
+  /* opacity: 0.3; */
+  /* filter: contrast(0.4); */
+  /* background-color: rgba(255, 255, 255, 0.599);
+
+    content: "";
+    background-color: rgba(255, 255, 255, 0.8);
+    position: absolute;
+    width: 20%;
+    height: 60px;
+    top: 0;
+    border-radius: 10px;
+  } */
 
   /* .texts { */
   /* grid-area: text; */
