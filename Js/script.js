@@ -15,18 +15,6 @@ document.addEventListener("click", (e) => {
 });
 // +++++++++++++
 
-// ------ Ventana del carrito
-let $cartIcon = document.getElementById("cart");
-let $cartSection = document.getElementById("cart-section");
-document.addEventListener("click", (e) => {
-  if (e.target.matches("#cart")) {
-    $cartSection.classList.toggle("active");
-  } else {
-    $cartSection.classList.remove("active");
-  }
-});
-// ------------
-
 /*Variables para la galería*/
 
 const btnClose = document.getElementById("close-lightbox");
@@ -175,3 +163,129 @@ btnNext.forEach((btn) => {
 
 // Botón que retrocede la Imagen
 btnPrevious.forEach((btn) => btn.addEventListener("click", retrocederImagen));
+
+// |----------- Lógica del carrito ---------|
+
+const product = [
+  {
+    id: 1,
+    model: "Fall Limited Edition Sneakers",
+    currPrice: 125,
+    discount: 50,
+    originalPrice: 250,
+    image: "images/image-product-1-thumbnail.jpg",
+  },
+];
+
+console.log(product[0].model);
+
+const itemsInCart = [];
+
+// Funciones clave:
+function addToCart(product, quantity) {
+  const itExists = itemsInCart.find((p) => p.id === product.id);
+  if (itExists) {
+    itExists.quantity += quantity;
+  } else {
+    itemsInCart.push({ ...product, quantity });
+  }
+  updateCartVisuals();
+}
+
+function deleteFromCart(idProduct) {
+  const index = itemsInCart.findIndex((p) => p.id === idProduct);
+  if (index !== -1) {
+    itemsInCart.splice(index, 1);
+    updateCartVisuals();
+  }
+}
+
+function calculateTotal() {
+  return itemsInCart.reduce((total, p) => total + p.quantity, 0);
+}
+
+function updateCartVisuals() {
+  const $cartSection = document.getElementById("cart-section");
+  const $cartCount = document.getElementById("cart-items-count");
+  const $emptyMsg = document.getElementById("empty-cart-msg");
+  const $checkoutBtn = document.getElementById("checkout-btn");
+
+  const fragment = document.createDocumentFragment();
+
+  itemsInCart.forEach((product) => {
+    const template = document.getElementById("cart-item-template");
+
+    const clone = template.content.cloneNode(true);
+
+    clone.querySelector(".thumb").src = product[id].image;
+    clone.querySelector(".model").textContent = product[0].model;
+    clone.querySelector(".price").textContent = `$${product[0].currPrice}`;
+    clone.querySelector(".quantity").textContent = `x ${product[0].quantity}`;
+
+    fragment.appendChild(clone);
+  });
+
+  $cartSection.appendChild(fragment);
+
+  // Actualizar contador
+  const totalQuantity = calculateTotal();
+  $cartCount.textContent = totalQuantity;
+  $cartCount.style.visibility = totalQuantity > 0 ? "visible" : "hidden";
+
+  // Mostrar mensaje si está vacío
+  $emptyMsg.style.display = totalQuantity === 0 ? "block" : "none";
+  $checkoutBtn.style.display = totalQuantity === 0 ? "block" : "none";
+  // $checkoutBtn.style.display = "block";
+
+  console.log("JALANDO");
+}
+
+// ----------------
+
+// --- Quantity Selection ---
+const $quantityDisplay = document.getElementById("quantity"),
+  $decrease = document.getElementById("decrease-btn"),
+  $increase = document.getElementById("increase-btn");
+let selectedQuantity = 0,
+  fragment = document.createDocumentFragment();
+
+const updateQuantity = () => {
+  $quantityDisplay.textContent = selectedQuantity;
+};
+
+const decreaseSelectedQuantity = () => {
+  if (selectedQuantity > 0) {
+    selectedQuantity--;
+    updateQuantity();
+  }
+};
+
+const increaseSelectedQuantity = () => {
+  selectedQuantity++;
+  updateQuantity();
+};
+
+$decrease.addEventListener("click", decreaseSelectedQuantity);
+$increase.addEventListener("click", increaseSelectedQuantity);
+
+// ----- Add to cart
+let $btnAddToCart = document.getElementById("add-to-cart");
+
+$btnAddToCart.addEventListener("click", (e) => {
+  if (selectedQuantity === 0) return;
+  addToCart({ ...product, quantity: selectedQuantity });
+  selectedQuantity = 0;
+});
+// console.log(itemsInCart);
+// if($quantity.textContent > 0)
+
+// ------ Ventana del carrito
+let $cartSection = document.getElementById("cart-section");
+document.addEventListener("click", (e) => {
+  if (e.target.matches("#cart")) {
+    $cartSection.classList.toggle("active");
+  } else {
+    $cartSection.classList.remove("active");
+  }
+});
+// ------------
